@@ -1,4 +1,4 @@
-FROM ubuntu:latest as build
+FROM ubuntu:22.04 as build
 
 ENV TZ=Europe/Rome
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
@@ -55,10 +55,10 @@ RUN CROSS_COMPILE=x86_64-ubuntu16.04-linux-gnu /opt/lib/build_libs.sh && \
     CROSS_COMPILE=aarch64-linux-gnu /opt/lib/build_libs.sh && \
     CROSS_COMPILE=i686-ubuntu16.04-linux-gnu /opt/lib/build_libs.sh && \
     CROSS_COMPILE=i686-w64-mingw32 /opt/lib/build_libs.sh && \
-    # CROSS_COMPILER is used to override the compiler 
+    # CROSS_COMPILER is used to override the compiler
     CROSS_COMPILER=o64-clang CROSS_COMPILE=x86_64-apple-darwin13 AR=/opt/osxcross/target/bin/x86_64-apple-darwin13-ar RANLIB=/opt/osxcross/target/bin/x86_64-apple-darwin13-ranlib /opt/lib/build_libs.sh
 
-FROM ubuntu:latest
+FROM ubuntu:22.04
 # Copy all the installed toolchains and compiled libs
 COPY --from=build /opt /opt
 COPY --from=build /usr/lib/llvm-10/lib/clang/10.0.0 /usr/lib/llvm-10/lib/clang/10.0.0
